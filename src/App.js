@@ -1,17 +1,33 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import './App.css'
 
 import firebase from './firebase'
 
-const ref = firebase.database().ref('test')
-ref.on('value', snapshot => {
-  console.log(snapshot.val())
-})
+const Comments = () => {
+  const [data, setData] = useState({})
+  const ref = firebase.database().ref('test')
+
+  useEffect(() => {
+    ref.on('value', snapshot => {
+      setData(snapshot.val())
+    })
+    return () => {
+      ref.off()
+    }
+  }, [])
+
+  return(
+    <pre>{JSON.stringify(data)}</pre>
+  )
+}
 
 function App() {
+  const [visible, toggle] = useState(true)
+
   return (
     <div>
-
+    <button onClick={() => toggle(!visible)}>Toggle</button>
+      { visible && <Comments />}
     </div>
   )
 }
