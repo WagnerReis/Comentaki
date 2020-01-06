@@ -3,9 +3,9 @@ import './App.css'
 
 import firebase from './firebase'
 
-const Comments = () => {
+const useDatabase = endpoint => {
   const [data, setData] = useState({})
-  const ref = firebase.database().ref('test')
+  const ref = firebase.database().ref(endpoint)
 
   useEffect(() => {
     ref.on('value', snapshot => {
@@ -14,11 +14,21 @@ const Comments = () => {
     return () => {
       ref.off()
     }
-  }, [])
+  }, [endpoint])
+  return data
+}
 
-  return(
+const Comments = ({ visible }) => {
+  const endpoint = visible ? 'test' : 'test/a'
+  const data = useDatabase(endpoint)
+  return (
     <pre>{JSON.stringify(data)}</pre>
   )
+}
+
+const A = () => {
+  const data = useDatabase('test/a')
+  return ( <pre>{JSON.stringify(data)}</pre> )
 }
 
 function App() {
@@ -26,8 +36,9 @@ function App() {
 
   return (
     <div>
-    <button onClick={() => toggle(!visible)}>Toggle</button>
-      { visible && <Comments />}
+      <button onClick={() => toggle(!visible)}>Toggle</button>
+      <Comments visible={visible} />
+      <A />
     </div>
   )
 }
