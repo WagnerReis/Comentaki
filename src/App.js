@@ -18,6 +18,22 @@ const useDatabase = endpoint => {
   return data
 }
 
+const useDatabasePush = endpoint => {
+  const [status, setStatus] = useState('')
+
+  const save = data => {
+    const ref = firebase.database().ref(endpoint)
+    ref.push(data, err => {
+      if(err){
+        setStatus('ERROR')
+      }else{
+        setStatus('SUCCESS')
+      }
+    })
+  }
+  return [status, save]
+}
+
 const Comments = ({ visible }) => {
   const endpoint = visible ? 'test' : 'test/a'
   const data = useDatabase(endpoint)
@@ -33,10 +49,14 @@ const A = () => {
 
 function App() {
   const [visible, toggle] = useState(true)
-
+  const [status, save] = useDatabasePush('test')
   return (
     <div>
-      <button onClick={() => toggle(!visible)}>Toggle</button>
+      <button onClick={() => {
+        toggle(!visible)
+        save({ valor: 1, b: 2})
+      }}>Toggle</button>
+      Status: {status}
       <Comments visible={visible} />
       <A />
     </div>
