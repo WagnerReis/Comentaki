@@ -1,23 +1,14 @@
-import React, { useState } from 'react'
+import React from 'react'
 import './App.css'
 
-import NewComment from './NewComment'
-import Comments from './Comments'
-import CreateUser from './CreateUser'
-import UserInfo from './UserInfo'
-import SignInUser from './SignInUser'
-
 import { AuthProvider } from './auth'
+import Routes from './routes'
 
 function App() {
   return (
     <AuthProvider>
       <div>
-        <NewComment />
-        <Comments />
-        <CreateUser />
-        <SignInUser />
-        <UserInfo />
+        <Routes />
       </div>
     </AuthProvider>
   )

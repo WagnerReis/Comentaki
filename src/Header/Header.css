@@ -1,0 +1,10 @@
+.div{
+    width: 100%;
+    max-width: 930px;
+    margin: 0 auto;
+    padding: 0 30px;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
